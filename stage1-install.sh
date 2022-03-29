@@ -1,7 +1,5 @@
 #!/bin/bash
-# <style>*{font-size:0;margin-top:1em}</style><pre style="font-size:medium">
-#&excl;/bin/bash
-# gendeploy stage1 - stage1 of the Gentoo installation script
+# gendeploy stage1 = stage1 of the Gentoo installation script
 
 headerText="\e[0;35mgen\e[1;35mdeploy \e[0;37m(stage1)\e[0m"
 
