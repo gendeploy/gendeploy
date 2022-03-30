@@ -6,7 +6,8 @@ headerText="\e[0;35mgen\e[1;35mdeploy \e[0;37m(stage1)\e[0m"
 # shellcheck disable=SC2120
 headerPrint() {
 	clear
-	printf "  %s                                                       ;-)\n" "$headerText"
+	# shellcheck disable=SC2059
+	printf "  $headerText                                                       ;-)\n"
 	printf "================================================================================\n"
 	printf "\n"
 }
