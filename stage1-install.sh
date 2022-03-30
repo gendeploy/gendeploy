@@ -138,10 +138,11 @@ Based on your system, the wizard recommends a MAKEOPTS of %s.\n\n" "$makeopts"
 		[Yy]*)
 			printf "Please enter a new value that DOES NOT start with -j.\n"
 			read -r -p "> " makeopts
-			echo "makeopts='-j$MAKEOPTS'"
 			;;
 		*)	printf "Great!\n" ;;
 	esac
+
+	echo "makeopts='-j$MAKEOPTS'" >> ./.gendeploy.conf
 
 	export commonflags="-march=native -mtune=native -O2"
 	read -r -p "Would you like to use -pipe? (Y/n)" yn
