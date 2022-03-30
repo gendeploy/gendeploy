@@ -155,6 +155,26 @@ Based on your system, the wizard recommends a MAKEOPTS of %s.\n\n" "$makeopts"
 	printf "What USE flags would you like to use?\n"
 	read -r -p "> " useflags
 	echo "useflags='$useflags'" >> ./.gendeploy.conf
+
+	# ask for filesystem
+
+	headerPrint
+
+	printf "And finally, what filesystem would you like to use?\n\
+1. ext4 (recommended)\n\
+2. btrfs\n\
+3. f2fs (NOT recommended, unless you're installing on SD/USB)\n\
+(note: any other option will choose 1)\n\n\
+If you don't know what to choose, just press ENTER.\n"
+	read -r -p "> " fschoice
+
+	case $fschoice in
+		"2") fschoice="btrfs"  ;;
+		"3") fschoice="f2fs" ;;
+		*) fschoice="ext4" ;;
+	esac
+
+	echo "fschoice=$fschoice" >> ./.gendeploy.conf
 }
 
 # if a configuration file is found, start "lazy" setup
