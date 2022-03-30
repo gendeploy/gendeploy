@@ -124,9 +124,9 @@ If you don't know what to choose, just press ENTER.\n"
 
 	ramdivided="$(($(free --gibi --si | awk '/^Mem/ { print $2 }') / 2))"
 	if (( "$(nproc)" > "$ramdivided" )); then
-		makeopts="-j$ramdivided"
+		makeopts="$ramdivided"
 	else
-		makeopts="-j$(nproc)"
+		makeopts="$(nproc)"
 	fi
 
 	printf "Time to configure make.conf!\n\
@@ -142,7 +142,7 @@ Based on your system, the wizard recommends a MAKEOPTS of %s.\n\n" "$makeopts"
 		*)	printf "Great!\n" ;;
 	esac
 
-	echo "makeopts='-j$MAKEOPTS'" >> ./.gendeploy.conf
+	echo "makeopts='-j$makeopts'" >> ./.gendeploy.conf
 
 	export commonflags="-march=native -mtune=native -O2"
 	read -r -p "Would you like to use -pipe? (Y/n)" yn
@@ -176,6 +176,39 @@ If you don't know what to choose, just press ENTER.\n"
 	esac
 
 	echo "fschoice=$fschoice" >> ./.gendeploy.conf
+
+	# ask user to review settings
+
+	headerPrint
+
+	printf "Alright, I know you really want to start installing already,\n\
+but I just need you to review your configuration.\n\n"
+	cat ./.gendeploy.conf
+	printf "\nWhat would you like to do?\n\
+1. Start installing already, dang it!\n\
+2. Save the configuration and exit. (default)\n\
+3. No, forget it, remove the configuration!\n"
+	read -r -p "> " query
+
+	case $query in
+		"1")
+			echo "complete='yes'" >> ./.gendeploy.conf
+			printf "uhh, sorry, but we kinda haven't actually added the installation capability soooooo uhhh, this is a placeholder I HOPE YOU WONT BE TOO MAD PLEASE I BEG YOU\n"
+			die "PLEASE DON'T HURT ME :-("
+		;;
+
+		"3")
+			printf "Alright, goodbye!\n"
+			rm ./.gendeploy.conf
+			exit
+		;;
+
+		*)
+			echo "complete='yes'" >> ./.gendeploy.conf
+			printf "Alright, goodbye!\n"
+			exit
+		;;
+	esac
 }
 
 # if a configuration file is found, start "lazy" setup
