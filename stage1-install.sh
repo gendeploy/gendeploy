@@ -229,7 +229,13 @@ please press ^C within 5 seconds.\n\n"
 }
 
 if [ -f ./.gendeploy.conf ]; then
-	autoinstall
+	source ./.gendeploy.conf
+	if [ "$complete" = "yes" ]; then
+		mv ./.gendeploy.conf ./.old.gendeploy.conf
+		autoinstall
+	else
+		noconf
+	fi
 else
-	noconf
+	autoinstall
 fi
