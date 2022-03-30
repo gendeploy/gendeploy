@@ -6,6 +6,8 @@ headerText="\e[0;35mgen\e[1;35mdeploy \e[0;37m(stage1)\e[0m"
 # shellcheck disable=SC2120
 headerPrint() {
 	clear
+	# The reason for this shellcheck directive is that, in this case, we want printf to print $headerText
+	# with formatting.
 	# shellcheck disable=SC2059
 	printf "  $headerText                                                       ;-)\n"
 	printf "================================================================================\n"
