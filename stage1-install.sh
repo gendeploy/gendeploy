@@ -157,6 +157,39 @@ Based on your system, the wizard recommends a MAKEOPTS of %s.\n\n" "$makeopts"
 	read -r -p "> " useflags
 	echo "useflags='$useflags'" >> ./.gendeploy.conf
 
+	# ask for kernel
+
+	headerPrint
+
+	printf "What kernel would you like?\n\
+1. Custom config (./.config)\n\
+2. Custom config (URL)\n\
+3. Binary kernel\n\
+4. Genkernel (NOT RECOMMENDED!)\n\n\
+(note: any other option will choose 3)\n\n\
+If you don't know, just press ENTER.\n"
+	read -r -p "> " kerneltype
+
+	case $kerneltype in
+		"1") kerneltype="local" ;;
+		"2")
+			kerneltype="url"
+			printf "What's the kernel config URL?\n"
+			type -r -p "> " kernelurl
+			echo "kernelurl='$kernelurl'" >> ./.gendeploy.conf
+			;;
+		"4")
+			kerneltype="genkernel"
+			printf "WARNING: Genkernel is very cringe and bluepilled.\n\
+You are better off with a binary kernel.\n"
+			;;
+		*)
+			kerneltype="binary"
+			;;
+	esac
+
+	echo "kerneltype='$kerneltype'" >> ./.gendeploy.conf
+
 	# ask for filesystem
 
 	headerPrint
@@ -229,13 +262,14 @@ please press ^C within 5 seconds.\n\n"
 }
 
 if [ -f ./.gendeploy.conf ]; then
+	complete="no"
 	source ./.gendeploy.conf
 	if [ "$complete" = "yes" ]; then
-		mv ./.gendeploy.conf ./.old.gendeploy.conf
 		autoinstall
 	else
+		mv ./.gendeploy.conf ./.old.gendeploy.conf
 		noconf
 	fi
 else
-	autoinstall
+	noconf
 fi
